@@ -1,5 +1,3 @@
-setwd("/Users/ahmedissaoui/Documents/Ahmed/Classes/IEOR 242/HW/HW2/")
-
 library(dplyr)
 library(ggplot2)
 library(GGally)
@@ -24,17 +22,13 @@ My_Data.test  <- filter(My_Data, split == FALSE)
 # how many people had CHD within 10 years
 table(My_Data.train$TenYearCHD)
 
-###############################################################################
-####                            Question A (i & ii)                            ####
-###############################################################################
+
 
 # Fit logistic regression model
-
 
 mod <- glm(TenYearCHD ~ ., data = My_Data.train, family = "binomial")
 summary(mod)
 
-male, age, cigsPerDay, sysBP, glucose
 
 # Look at the correlation between the best features (having the lowest p-value)
 ggscatmat(My_Data.train, columns = c(2,3,8,13,14), alpha = 0.8)
@@ -45,16 +39,12 @@ predTest = predict(mod, newdata = My_Data.test, type = "response")
 #Summary of model probabilities on the test set
 summary(predTest)
 
-###############################################################################
-####                            Question A (iii)                            ####
-###############################################################################
+
 
 # Lets create a confusion matrix with a threshhold of probability = 0.5
 table(My_Data.test$TenYearCHD, predTest > 0.15)
 
-###############################################################################
-####                            Question A (iv)                            ####
-###############################################################################
+
 
 # What is the accuracy of this model? 
 cat("The accuracy of the logitc regression model is = ", (606+119)/nrow(My_Data.test))
@@ -65,9 +55,6 @@ cat("The True Positive Rate =", 119 / (119 + 48))
 # What is the FPR?
 cat("The False Positive Rate =", 324 / (606 + 324))
 
-###############################################################################
-####                            Question A (vi)                            ####
-###############################################################################
 
 
 #Baseline model: predict that no one will have the disease 
@@ -81,9 +68,6 @@ cat("Accuracy of baseline on training =",2171/(2171+390))
 table(My_Data.test$TenYearCHD)
 cat("Accuracy of baseline on testing =",930/(930+167))
 
-###############################################################################
-####                            Question A (vii)                            ####
-###############################################################################
 
 # Prediction for the new observation example
 new_obs <- data.frame(male = 0,
@@ -105,9 +89,6 @@ new_obs <- data.frame(male = 0,
 predict(mod, newdata = new_obs, type = "response")
 
 
-###############################################################################
-####                            Question B                                 ####
-###############################################################################
 
 
 # ROC curves
@@ -117,9 +98,6 @@ plot(logPerformance, colorize = TRUE)
 abline(0,1)
 as.numeric(performance(rocr.log.pred, "auc")@y.values)
 
-###############################################################################
-####                            Question C                                 ####
-###############################################################################
 
 
 # using LDA: 
